@@ -1,0 +1,513 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: #10131a;
+    color: white;
+}
+
+
+/* =========================
+   INICIO
+========================= */
+
+.app {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.logo h1 {
+    font-size: 42px;
+    margin-top: 10px;
+}
+
+.logo p {
+    color: #aeb4c0;
+    margin-top: 8px;
+}
+
+.menu {
+    width: 100%;
+    max-width: 420px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.menu button {
+    border: none;
+    border-radius: 14px;
+
+    padding: 17px;
+
+    background: #242936;
+    color: white;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.menu button:hover {
+    background: #303746;
+    transform: translateY(-2px);
+}
+
+
+/* =========================
+   MODAL
+========================= */
+
+.modal {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.75);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.modal-box {
+    position: relative;
+
+    width: 100%;
+    max-width: 440px;
+
+    background: #191d26;
+
+    border-radius: 18px;
+
+    padding: 30px;
+}
+
+.modal-box h2 {
+    margin-bottom: 25px;
+}
+
+.modal-box label {
+    display: block;
+
+    margin-top: 15px;
+    margin-bottom: 7px;
+
+    color: #c7ccd5;
+}
+
+.modal-box input {
+    width: 100%;
+
+    padding: 14px;
+
+    border: 1px solid #343a48;
+    border-radius: 10px;
+
+    background: #10131a;
+    color: white;
+
+    font-size: 16px;
+
+    outline: none;
+}
+
+.modal-box input:focus {
+    border-color: white;
+}
+
+.close {
+    position: absolute;
+
+    right: 18px;
+    top: 15px;
+
+    border: none;
+    background: none;
+
+    color: #aaa;
+
+    font-size: 20px;
+
+    cursor: pointer;
+}
+
+.continue {
+    width: 100%;
+
+    margin-top: 20px;
+
+    padding: 15px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: white;
+    color: #10131a;
+
+    font-size: 17px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+#result {
+    margin-top: 18px;
+
+    text-align: center;
+
+    color: #c7ccd5;
+
+    line-height: 1.5;
+}
+
+
+/* =========================
+   CHAT
+========================= */
+
+.chat-screen {
+    min-height: 100vh;
+}
+
+.chat-header {
+    min-height: 80px;
+
+    padding: 18px 30px;
+
+    background: #191d26;
+
+    border-bottom: 1px solid #303541;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header h2 {
+    font-size: 22px;
+}
+
+.chat-header p {
+    color: #aeb4c0;
+    margin-top: 5px;
+}
+
+#logoutBtn {
+    border: none;
+    border-radius: 10px;
+
+    padding: 10px 14px;
+
+    background: #242936;
+    color: white;
+
+    cursor: pointer;
+}
+
+.dashboard {
+    width: 100%;
+    max-width: 850px;
+
+    margin: auto;
+
+    padding: 30px 20px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: bold;
+
+    margin-bottom: 12px;
+}
+
+.groups-title {
+    margin-top: 35px;
+}
+
+.chat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.empty-message {
+    padding: 20px;
+
+    background: #191d26;
+
+    border-radius: 14px;
+
+    color: #8f96a3;
+
+    text-align: center;
+}
+
+.create-group {
+    width: 100%;
+
+    margin-top: 15px;
+
+    padding: 14px;
+
+    border: 1px dashed #596170;
+    border-radius: 12px;
+
+    background: transparent;
+    color: #d8dce4;
+
+    cursor: pointer;
+
+    font-size: 16px;
+}
+
+.create-group:hover {
+    background: #191d26;
+}
+/* =========================
+   MIEMBROS
+========================= */
+
+.member-card,
+.chat-card {
+    width: 100%;
+
+    padding: 16px;
+
+    border: none;
+    border-radius: 14px;
+
+    background: #191d26;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.member-card:hover,
+.chat-card:hover {
+    background: #242936;
+    transform: translateY(-1px);
+}
+
+.member-avatar {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 50%;
+
+    background: #303746;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 21px;
+}
+
+.member-info {
+    flex: 1;
+}
+
+.member-name {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.member-role {
+    color: #8f96a3;
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+
+/* =========================
+   CONVERSACIÓN
+========================= */
+
+.conversation-screen {
+    position: fixed;
+
+    inset: 0;
+
+    background: #10131a;
+
+    z-index: 100;
+    
+    display: flex;
+    flex-direction: column;
+}
+
+.conversation-header {
+    min-height: 75px;
+
+    padding: 15px 20px;
+
+    background: #191d26;
+
+    border-bottom: 1px solid #303541;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+}
+
+.conversation-header button {
+    border: none;
+
+    background: #242936;
+
+    color: white;
+
+    border-radius: 10px;
+
+    width: 42px;
+    height: 42px;
+
+    font-size: 22px;
+
+    cursor: pointer;
+}
+
+.conversation-header h2 {
+    font-size: 19px;
+}
+
+.conversation-header p {
+    color: #8f96a3;
+
+    font-size: 13px;
+
+    margin-top: 3px;
+}
+
+
+/* =========================
+   MENSAJES
+========================= */
+
+.messages {
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.message {
+    max-width: 75%;
+
+    padding: 10px 14px;
+
+    border-radius: 14px;
+
+    background: #242936;
+
+    align-self: flex-start;
+
+    word-wrap: break-word;
+}
+
+.message.mine {
+    align-self: flex-end;
+
+    background: #ffffff;
+
+    color: #10131a;
+}
+
+.message-author {
+    font-size: 11px;
+
+    opacity: 0.6;
+
+    margin-bottom: 4px;
+}
+
+
+/* =========================
+   ESCRIBIR
+========================= */
+
+.message-box {
+    padding: 12px;
+
+    background: #191d26;
+
+    border-top: 1px solid #303541;
+
+    display: flex;
+
+    gap: 10px;
+}
+
+.message-box input {
+    flex: 1;
+
+    padding: 13px;
+
+    border: 1px solid #343a48;
+
+    border-radius: 12px;
+
+    background: #10131a;
+
+    color: white;
+
+    outline: none;
+
+    font-size: 15px;
+}
+
+.message-box button {
+    width: 48px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: white;
+
+    color: #10131a;
+
+    font-size: 18px;
+
+    cursor: pointer;
+}
