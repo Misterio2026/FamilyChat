@@ -33,30 +33,16 @@ import {
 // ==========================================
 
 const firebaseConfig = {
-
     apiKey: "AIzaSyAy69FT08SsCbmTa44sgffTRCUZ_KEyfks",
-
     authDomain: "familychat-ea652.firebaseapp.com",
-
     projectId: "familychat-ea652",
-
     storageBucket: "familychat-ea652.firebasestorage.app",
-
     messagingSenderId: "992864076339",
-
     appId: "1:992864076339:web:a5ddf60c234e831f495946"
-
 };
 
-
-// ==========================================
-// INICIAR FIREBASE
-// ==========================================
-
 const app = initializeApp(firebaseConfig);
-
 const db = getFirestore(app);
-
 const auth = getAuth(app);
 
 
@@ -65,15 +51,11 @@ const auth = getAuth(app);
 // ==========================================
 
 let currentUser = null;
-
 let currentFamilyCode = null;
-
 let currentUserName = null;
-
 let currentChatId = null;
 
 let unsubscribeMessages = null;
-
 let unsubscribeMembers = null;
 
 let mode = "create";
@@ -149,6 +131,9 @@ const chatList =
 const conversationName =
     document.getElementById("conversationName");
 
+const conversationType =
+    document.getElementById("conversationType");
+
 const messages =
     document.getElementById("messages");
 
@@ -160,6 +145,119 @@ const sendMessageBtn =
 
 const backChatBtn =
     document.getElementById("backChatBtn");
+
+
+// ==========================================
+// TEMAS
+// ==========================================
+
+const themeBtn =
+    document.getElementById("themeBtn");
+
+const themePanel =
+    document.getElementById("themePanel");
+
+const closeThemeBtn =
+    document.getElementById("closeThemeBtn");
+
+const themeOptions =
+    document.querySelectorAll(".theme-option");
+
+
+function cargarTema() {
+
+    const savedTheme =
+        localStorage.getItem(
+            "familyChat_theme"
+        );
+
+    const theme =
+        savedTheme || "space";
+
+    document.body.dataset.theme =
+        theme;
+}
+
+
+function guardarTema(theme) {
+
+    document.body.dataset.theme =
+        theme;
+
+    localStorage.setItem(
+        "familyChat_theme",
+        theme
+    );
+}
+
+
+cargarTema();
+
+
+themeBtn.addEventListener(
+    "click",
+    function () {
+
+        themePanel
+            .classList
+            .remove("hidden");
+
+    }
+);
+
+
+closeThemeBtn.addEventListener(
+    "click",
+    function () {
+
+        themePanel
+            .classList
+            .add("hidden");
+
+    }
+);
+
+
+themePanel.addEventListener(
+    "click",
+    function (event) {
+
+        if (
+            event.target ===
+            themePanel
+        ) {
+
+            themePanel
+                .classList
+                .add("hidden");
+
+        }
+
+    }
+);
+
+
+themeOptions.forEach(
+    function (button) {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                const theme =
+                    button.dataset.theme;
+
+                guardarTema(theme);
+
+                themePanel
+                    .classList
+                    .add("hidden");
+
+            }
+        );
+
+    }
+);
 
 
 // ==========================================
@@ -176,10 +274,7 @@ onAuthStateChanged(
 
         currentUser = user;
 
-        console.log(
-            "Usuario conectado:",
-            currentUser.uid
-        );
+        cargarTema();
 
         await recuperarSesion();
 
@@ -187,15 +282,11 @@ onAuthStateChanged(
 );
 
 
-// ==========================================
-// INICIAR AUTENTICACIÓN ANÓNIMA
-// ==========================================
-
 signInAnonymously(auth)
     .then(function () {
 
         console.log(
-            "Autenticación anónima iniciada"
+            "Autenticación anónima iniciada."
         );
 
     })
@@ -231,14 +322,14 @@ createBtn.addEventListener(
             .add("hidden");
 
         familyName.value = "";
-
         familyCode.value = "";
-
         userName.value = "";
 
         result.textContent = "";
 
-        modal.classList.remove("hidden");
+        modal
+            .classList
+            .remove("hidden");
 
     }
 );
@@ -266,12 +357,13 @@ joinBtn.addEventListener(
             .remove("hidden");
 
         familyCode.value = "";
-
         userName.value = "";
 
         result.textContent = "";
 
-        modal.classList.remove("hidden");
+        modal
+            .classList
+            .remove("hidden");
 
     }
 );
@@ -285,7 +377,9 @@ closeBtn.addEventListener(
     "click",
     function () {
 
-        modal.classList.add("hidden");
+        modal
+            .classList
+            .add("hidden");
 
     }
 );
@@ -303,10 +397,6 @@ continueBtn.addEventListener(
             userName.value.trim();
 
 
-        // ------------------------------
-        // COMPROBAR NOMBRE
-        // ------------------------------
-
         if (name === "") {
 
             result.textContent =
@@ -316,10 +406,6 @@ continueBtn.addEventListener(
 
         }
 
-
-        // ------------------------------
-        // COMPROBAR FIREBASE
-        // ------------------------------
 
         if (!currentUser) {
 
@@ -361,8 +447,6 @@ continueBtn.addEventListener(
                     await generarCodigoUnico();
 
 
-                // Crear familia
-
                 await setDoc(
                     doc(
                         db,
@@ -386,8 +470,6 @@ continueBtn.addEventListener(
                 );
 
 
-                // Crear miembro organizador
-
                 await setDoc(
                     doc(
                         db,
@@ -409,15 +491,11 @@ continueBtn.addEventListener(
                 );
 
 
-                // Guardar sesión
-
                 guardarSesion(
                     code,
                     name
                 );
 
-
-                // Abrir FamilyChat
 
                 abrirFamilyChat(
                     family,
@@ -481,10 +559,6 @@ continueBtn.addEventListener(
                     );
 
 
-                // ------------------------------
-                // FAMILIA NO EXISTE
-                // ------------------------------
-
                 if (
                     !familySnapshot.exists()
                 ) {
@@ -500,10 +574,6 @@ continueBtn.addEventListener(
                 const family =
                     familySnapshot.data();
 
-
-                // ------------------------------
-                // CREAR MIEMBRO
-                // ------------------------------
 
                 await setDoc(
                     doc(
@@ -526,15 +596,11 @@ continueBtn.addEventListener(
                 );
 
 
-                // Guardar sesión
-
                 guardarSesion(
                     code,
                     name
                 );
 
-
-                // Abrir FamilyChat
 
                 abrirFamilyChat(
                     family.name,
@@ -576,10 +642,6 @@ function abrirFamilyChat(
         name;
 
 
-    // ------------------------------
-    // CAMBIAR PANTALLA
-    // ------------------------------
-
     homeScreen
         .classList
         .add("hidden");
@@ -597,12 +659,9 @@ function abrirFamilyChat(
         .remove("hidden");
 
 
-    // ------------------------------
-    // INFORMACIÓN
-    // ------------------------------
-
     familyTitle.textContent =
         "🏠 " + family;
+
 
     welcomeText.textContent =
         "Hola, " +
@@ -610,10 +669,6 @@ function abrirFamilyChat(
         " · Código: " +
         code;
 
-
-    // ------------------------------
-    // CARGAR MIEMBROS
-    // ------------------------------
 
     cargarMiembros();
 
@@ -630,8 +685,6 @@ function cargarMiembros() {
         return;
     }
 
-
-    // Evitar listeners duplicados
 
     if (unsubscribeMembers) {
 
@@ -669,8 +722,6 @@ function cargarMiembros() {
                             memberDoc.id;
 
 
-                        // No mostrarnos a nosotros mismos
-
                         if (
                             memberId ===
                             currentUser.uid
@@ -707,11 +758,13 @@ function cargarMiembros() {
                                 </div>
 
                                 <div class="member-role">
+
                                     ${
                                         member.role === "owner"
                                             ? "👑 Organizador"
                                             : "Miembro"
                                     }
+
                                 </div>
 
                             </div>
@@ -797,6 +850,10 @@ function abrirConversacion(
 
     conversationName.textContent =
         "💬 " + otherUserName;
+
+
+    conversationType.textContent =
+        "Conversación privada";
 
 
     cargarMensajes();
@@ -1082,7 +1139,7 @@ backChatBtn.addEventListener(
 
 
 // ==========================================
-// SALIR DE LA SESIÓN
+// CERRAR SESIÓN
 // ==========================================
 
 logoutBtn.addEventListener(
@@ -1094,6 +1151,7 @@ logoutBtn.addEventListener(
         detenerListeners();
 
         limpiarEstado();
+
 
         conversationScreen
             .classList
@@ -1107,11 +1165,6 @@ logoutBtn.addEventListener(
             .classList
             .remove("hidden");
 
-
-        console.log(
-            "Sesión cerrada"
-        );
-
     }
 );
 
@@ -1120,162 +1173,133 @@ logoutBtn.addEventListener(
 // SALIR DE LA FAMILIA
 // ==========================================
 
-if (leaveFamilyBtn) {
+leaveFamilyBtn.addEventListener(
+    "click",
+    async function () {
 
-    leaveFamilyBtn.addEventListener(
-        "click",
-        async function () {
+        if (
+            !currentUser ||
+            !currentFamilyCode
+        ) {
 
-            if (
-                !currentUser ||
-                !currentFamilyCode
-            ) {
+            return;
 
-                return;
-
-            }
+        }
 
 
-            const confirmar =
-                confirm(
-                    "¿Seguro que querés salir de esta familia?\n\n" +
-                    "Dejarás de aparecer en la lista de familiares " +
-                    "y tendrás que volver a unirte con el código si querés regresar."
+        const confirmar =
+            confirm(
+                "¿Seguro que querés salir de esta familia?\n\n" +
+                "Dejarás de aparecer en la lista de familiares " +
+                "y tendrás que volver a unirte con el código."
+            );
+
+
+        if (!confirmar) {
+
+            return;
+
+        }
+
+
+        leaveFamilyBtn.disabled =
+            true;
+
+        leaveFamilyBtn.textContent =
+            "⏳ Saliendo...";
+
+
+        try {
+
+            const memberRef =
+                doc(
+                    db,
+                    "families",
+                    currentFamilyCode,
+                    "members",
+                    currentUser.uid
                 );
 
 
-            if (!confirmar) {
-
-                return;
-
-            }
-
-
-            const originalText =
-                leaveFamilyBtn.textContent;
-
-
-            leaveFamilyBtn.disabled = true;
-
-            leaveFamilyBtn.textContent =
-                "⏳ Saliendo...";
-
-
-            try {
-
-                const memberRef =
-                    doc(
-                        db,
-                        "families",
-                        currentFamilyCode,
-                        "members",
-                        currentUser.uid
-                    );
-
-
-                const memberSnapshot =
-                    await getDoc(
-                        memberRef
-                    );
-
-
-                // ------------------------------
-                // YA NO EXISTE COMO MIEMBRO
-                // ------------------------------
-
-                if (
-                    !memberSnapshot.exists()
-                ) {
-
-                    borrarSesion();
-
-                    volverAlInicioDespuesDeSalir();
-
-                    return;
-
-                }
-
-
-                const member =
-                    memberSnapshot.data();
-
-
-                // ------------------------------
-                // EL ORGANIZADOR NO PUEDE SALIR
-                // ------------------------------
-
-                if (
-                    member.role === "owner"
-                ) {
-
-                    alert(
-                        "👑 Sos el organizador de esta familia.\n\n" +
-                        "Antes de poder salir habría que transferir " +
-                        "la organización a otro miembro."
-                    );
-
-                    leaveFamilyBtn.disabled = false;
-
-                    leaveFamilyBtn.textContent =
-                        originalText;
-
-                    return;
-
-                }
-
-
-                // ------------------------------
-                // ELIMINAR MIEMBRO
-                // ------------------------------
-
-                await deleteDoc(
+            const memberSnapshot =
+                await getDoc(
                     memberRef
                 );
 
 
-                // ------------------------------
-                // BORRAR SESIÓN LOCAL
-                // ------------------------------
+            if (
+                !memberSnapshot.exists()
+            ) {
 
                 borrarSesion();
 
-
-                // ------------------------------
-                // VOLVER AL INICIO
-                // ------------------------------
-
                 volverAlInicioDespuesDeSalir();
 
-
-                console.log(
-                    "El usuario salió de la familia."
-                );
+                return;
 
             }
 
-            catch (error) {
 
-                console.error(
-                    "Error al salir de la familia:",
-                    error
-                );
+            const member =
+                memberSnapshot.data();
+
+
+            if (
+                member.role === "owner"
+            ) {
 
                 alert(
-                    "❌ No se pudo salir de la familia.\n\n" +
-                    "Intentá nuevamente."
+                    "👑 Sos el organizador de esta familia.\n\n" +
+                    "Antes de salir habría que transferir " +
+                    "la organización a otro miembro."
                 );
 
-                leaveFamilyBtn.disabled = false;
+
+                leaveFamilyBtn.disabled =
+                    false;
 
                 leaveFamilyBtn.textContent =
-                    originalText;
+                    "🚪 Salir de la familia";
+
+                return;
 
             }
 
-        }
-    );
 
-}
+            await deleteDoc(
+                memberRef
+            );
+
+
+            borrarSesion();
+
+            volverAlInicioDespuesDeSalir();
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Error al salir de la familia:",
+                error
+            );
+
+
+            alert(
+                "❌ No se pudo salir de la familia."
+            );
+
+
+            leaveFamilyBtn.disabled =
+                false;
+
+            leaveFamilyBtn.textContent =
+                "🚪 Salir de la familia";
+
+        }
+
+    }
+);
 
 
 // ==========================================
@@ -1306,19 +1330,11 @@ function volverAlInicioDespuesDeSalir() {
         .remove("hidden");
 
 
-    if (leaveFamilyBtn) {
+    leaveFamilyBtn.disabled =
+        false;
 
-        leaveFamilyBtn.disabled = false;
-
-        leaveFamilyBtn.textContent =
-            "🚪 Salir de la familia";
-
-    }
-
-
-    console.log(
-        "Volviste al inicio después de salir de la familia."
-    );
+    leaveFamilyBtn.textContent =
+        "🚪 Salir de la familia";
 
 }
 
@@ -1378,6 +1394,7 @@ function guardarSesion(
         familyCode
     );
 
+
     localStorage.setItem(
         "familyChat_userName",
         userName
@@ -1397,6 +1414,7 @@ async function recuperarSesion() {
             "familyChat_familyCode"
         );
 
+
     const savedUserName =
         localStorage.getItem(
             "familyChat_userName"
@@ -1405,7 +1423,8 @@ async function recuperarSesion() {
 
     if (
         !savedFamilyCode ||
-        !savedUserName
+        !savedUserName ||
+        !currentUser
     ) {
 
         return;
@@ -1413,18 +1432,7 @@ async function recuperarSesion() {
     }
 
 
-    if (!currentUser) {
-
-        return;
-
-    }
-
-
     try {
-
-        // ------------------------------
-        // BUSCAR FAMILIA
-        // ------------------------------
 
         const familyRef =
             doc(
@@ -1450,14 +1458,6 @@ async function recuperarSesion() {
 
         }
 
-
-        const family =
-            familySnapshot.data();
-
-
-        // ------------------------------
-        // COMPROBAR MIEMBRO
-        // ------------------------------
 
         const memberRef =
             doc(
@@ -1486,19 +1486,13 @@ async function recuperarSesion() {
         }
 
 
-        // ------------------------------
-        // ENTRAR AUTOMÁTICAMENTE
-        // ------------------------------
+        const family =
+            familySnapshot.data();
+
 
         abrirFamilyChat(
             family.name,
             savedUserName,
-            savedFamilyCode
-        );
-
-
-        console.log(
-            "Sesión recuperada:",
             savedFamilyCode
         );
 
@@ -1525,6 +1519,7 @@ function borrarSesion() {
     localStorage.removeItem(
         "familyChat_familyCode"
     );
+
 
     localStorage.removeItem(
         "familyChat_userName"
@@ -1584,6 +1579,7 @@ function generateFamilyCode() {
     const characters =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
+
     let code = "FAM-";
 
 
@@ -1612,7 +1608,7 @@ function generateFamilyCode() {
 
 
 // ==========================================
-// SEGURIDAD HTML
+// ESCAPAR HTML
 // ==========================================
 
 function escapeHTML(text) {
@@ -1622,8 +1618,10 @@ function escapeHTML(text) {
             "div"
         );
 
+
     div.textContent =
         text;
+
 
     return div.innerHTML;
 
