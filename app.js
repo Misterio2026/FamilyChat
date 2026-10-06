@@ -10,6 +10,7 @@ import {
     doc,
     setDoc,
     getDoc,
+    deleteDoc,
     collection,
     addDoc,
     query,
@@ -136,6 +137,9 @@ const welcomeText =
 const logoutBtn =
     document.getElementById("logoutBtn");
 
+const leaveFamilyBtn =
+    document.getElementById("leaveFamilyBtn");
+
 const memberList =
     document.getElementById("memberList");
 
@@ -176,9 +180,6 @@ onAuthStateChanged(
             "Usuario conectado:",
             currentUser.uid
         );
-
-        // Intentar recuperar la familia
-        // automáticamente
 
         await recuperarSesion();
 
@@ -350,15 +351,15 @@ continueBtn.addEventListener(
             }
 
 
-            const code =
-                await generarCodigoUnico();
-
-
             result.textContent =
                 "⏳ Creando familia...";
 
 
             try {
+
+                const code =
+                    await generarCodigoUnico();
+
 
                 // Crear familia
 
@@ -408,7 +409,7 @@ continueBtn.addEventListener(
                 );
 
 
-                // GUARDAR SESIÓN
+                // Guardar sesión
 
                 guardarSesion(
                     code,
@@ -416,7 +417,7 @@ continueBtn.addEventListener(
                 );
 
 
-                // ABRIR FAMILYCHAT
+                // Abrir FamilyChat
 
                 abrirFamilyChat(
                     family,
@@ -525,7 +526,7 @@ continueBtn.addEventListener(
                 );
 
 
-                // GUARDAR SESIÓN
+                // Guardar sesión
 
                 guardarSesion(
                     code,
@@ -533,7 +534,7 @@ continueBtn.addEventListener(
                 );
 
 
-                // ABRIR FAMILYCHAT
+                // Abrir FamilyChat
 
                 abrirFamilyChat(
                     family.name,
@@ -602,7 +603,6 @@ function abrirFamilyChat(
 
     familyTitle.textContent =
         "🏠 " + family;
-
 
     welcomeText.textContent =
         "Hola, " +
@@ -1066,6 +1066,9 @@ backChatBtn.addEventListener(
         }
 
 
+        currentChatId = null;
+
+
         conversationScreen
             .classList
             .add("hidden");
@@ -1079,7 +1082,7 @@ backChatBtn.addEventListener(
 
 
 // ==========================================
-// SALIR
+// SALIR DE LA SESIÓN
 // ==========================================
 
 logoutBtn.addEventListener(
@@ -1088,31 +1091,9 @@ logoutBtn.addEventListener(
 
         borrarSesion();
 
+        detenerListeners();
 
-        if (unsubscribeMembers) {
-
-            unsubscribeMembers();
-
-            unsubscribeMembers = null;
-
-        }
-
-
-        if (unsubscribeMessages) {
-
-            unsubscribeMessages();
-
-            unsubscribeMessages = null;
-
-        }
-
-
-        currentFamilyCode = null;
-
-        currentUserName = null;
-
-        currentChatId = null;
-
+        limpiarEstado();
 
         conversationScreen
             .classList
@@ -1133,6 +1114,254 @@ logoutBtn.addEventListener(
 
     }
 );
+
+
+// ==========================================
+// SALIR DE LA FAMILIA
+// ==========================================
+
+if (leaveFamilyBtn) {
+
+    leaveFamilyBtn.addEventListener(
+        "click",
+        async function () {
+
+            if (
+                !currentUser ||
+                !currentFamilyCode
+            ) {
+
+                return;
+
+            }
+
+
+            const confirmar =
+                confirm(
+                    "¿Seguro que querés salir de esta familia?\n\n" +
+                    "Dejarás de aparecer en la lista de familiares " +
+                    "y tendrás que volver a unirte con el código si querés regresar."
+                );
+
+
+            if (!confirmar) {
+
+                return;
+
+            }
+
+
+            const originalText =
+                leaveFamilyBtn.textContent;
+
+
+            leaveFamilyBtn.disabled = true;
+
+            leaveFamilyBtn.textContent =
+                "⏳ Saliendo...";
+
+
+            try {
+
+                const memberRef =
+                    doc(
+                        db,
+                        "families",
+                        currentFamilyCode,
+                        "members",
+                        currentUser.uid
+                    );
+
+
+                const memberSnapshot =
+                    await getDoc(
+                        memberRef
+                    );
+
+
+                // ------------------------------
+                // YA NO EXISTE COMO MIEMBRO
+                // ------------------------------
+
+                if (
+                    !memberSnapshot.exists()
+                ) {
+
+                    borrarSesion();
+
+                    volverAlInicioDespuesDeSalir();
+
+                    return;
+
+                }
+
+
+                const member =
+                    memberSnapshot.data();
+
+
+                // ------------------------------
+                // EL ORGANIZADOR NO PUEDE SALIR
+                // ------------------------------
+
+                if (
+                    member.role === "owner"
+                ) {
+
+                    alert(
+                        "👑 Sos el organizador de esta familia.\n\n" +
+                        "Antes de poder salir habría que transferir " +
+                        "la organización a otro miembro."
+                    );
+
+                    leaveFamilyBtn.disabled = false;
+
+                    leaveFamilyBtn.textContent =
+                        originalText;
+
+                    return;
+
+                }
+
+
+                // ------------------------------
+                // ELIMINAR MIEMBRO
+                // ------------------------------
+
+                await deleteDoc(
+                    memberRef
+                );
+
+
+                // ------------------------------
+                // BORRAR SESIÓN LOCAL
+                // ------------------------------
+
+                borrarSesion();
+
+
+                // ------------------------------
+                // VOLVER AL INICIO
+                // ------------------------------
+
+                volverAlInicioDespuesDeSalir();
+
+
+                console.log(
+                    "El usuario salió de la familia."
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Error al salir de la familia:",
+                    error
+                );
+
+                alert(
+                    "❌ No se pudo salir de la familia.\n\n" +
+                    "Intentá nuevamente."
+                );
+
+                leaveFamilyBtn.disabled = false;
+
+                leaveFamilyBtn.textContent =
+                    originalText;
+
+            }
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// VOLVER AL INICIO DESPUÉS DE SALIR
+// ==========================================
+
+function volverAlInicioDespuesDeSalir() {
+
+    detenerListeners();
+
+    limpiarEstado();
+
+
+    conversationScreen
+        .classList
+        .add("hidden");
+
+    chatScreen
+        .classList
+        .add("hidden");
+
+    modal
+        .classList
+        .add("hidden");
+
+    homeScreen
+        .classList
+        .remove("hidden");
+
+
+    if (leaveFamilyBtn) {
+
+        leaveFamilyBtn.disabled = false;
+
+        leaveFamilyBtn.textContent =
+            "🚪 Salir de la familia";
+
+    }
+
+
+    console.log(
+        "Volviste al inicio después de salir de la familia."
+    );
+
+}
+
+
+// ==========================================
+// DETENER LISTENERS
+// ==========================================
+
+function detenerListeners() {
+
+    if (unsubscribeMembers) {
+
+        unsubscribeMembers();
+
+        unsubscribeMembers = null;
+
+    }
+
+
+    if (unsubscribeMessages) {
+
+        unsubscribeMessages();
+
+        unsubscribeMessages = null;
+
+    }
+
+}
+
+
+// ==========================================
+// LIMPIAR ESTADO
+// ==========================================
+
+function limpiarEstado() {
+
+    currentFamilyCode = null;
+
+    currentUserName = null;
+
+    currentChatId = null;
+
+}
 
 
 // ==========================================
