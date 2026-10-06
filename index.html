@@ -2,35 +2,67 @@
 <html lang="es">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>FamilyChat</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
+
 
 <body>
 
-    <!-- =========================
-         PANTALLA DE INICIO
-    ========================== -->
 
-    <main id="homeScreen" class="app">
+    <!-- ==================================================
+         PANTALLA DE INICIO
+    =================================================== -->
+
+    <main
+        id="homeScreen"
+        class="app"
+    >
 
         <div class="logo">
-            🏠
-            <h1>FamilyChat</h1>
-            <p>Tu chat familiar privado</p>
+
+            <div class="logo-icon">
+                🏠
+            </div>
+
+            <h1>
+                FamilyChat
+            </h1>
+
+            <p>
+                Tu chat familiar privado
+            </p>
+
         </div>
+
 
         <div class="menu">
 
-            <button id="createBtn">
+            <button
+                id="createBtn"
+                type="button"
+            >
                 👑 Crear familia
             </button>
 
-            <button id="joinBtn">
+
+            <button
+                id="joinBtn"
+                type="button"
+            >
                 🔑 Unirse a una familia
             </button>
 
@@ -39,28 +71,44 @@
     </main>
 
 
-    <!-- =========================
-         MODAL
-    ========================== -->
 
-    <div id="modal" class="modal hidden">
+    <!-- ==================================================
+         MODAL CREAR / UNIRSE
+    =================================================== -->
+
+    <div
+        id="modal"
+        class="modal hidden"
+    >
 
         <div class="modal-box">
 
-            <button id="closeBtn" class="close">
+
+            <!-- CERRAR -->
+
+            <button
+                id="closeBtn"
+                class="close"
+                type="button"
+            >
                 ✕
             </button>
+
 
             <h2 id="modalTitle">
                 Crear familia
             </h2>
 
 
-            <!-- CREAR FAMILIA -->
+            <!-- ==========================================
+                 NOMBRE DE FAMILIA
+            =========================================== -->
 
-            <div id="familyNameContainer">
+            <div
+                id="familyNameContainer"
+            >
 
-                <label>
+                <label for="familyName">
                     Nombre de la familia
                 </label>
 
@@ -69,16 +117,22 @@
                     type="text"
                     placeholder="Flia. Escalante"
                     maxlength="40"
+                    autocomplete="off"
                 >
 
             </div>
 
 
-            <!-- UNIRSE A FAMILIA -->
+            <!-- ==========================================
+                 CÓDIGO DE FAMILIA
+            =========================================== -->
 
-            <div id="codeContainer" class="hidden">
+            <div
+                id="codeContainer"
+                class="hidden"
+            >
 
-                <label>
+                <label for="familyCode">
                     Código de familia
                 </label>
 
@@ -87,14 +141,17 @@
                     type="text"
                     placeholder="FAM-3BYC"
                     maxlength="8"
+                    autocomplete="off"
                 >
 
             </div>
 
 
-            <!-- NOMBRE DEL USUARIO -->
+            <!-- ==========================================
+                 NOMBRE DEL USUARIO
+            =========================================== -->
 
-            <label>
+            <label for="userName">
                 Tu nombre
             </label>
 
@@ -103,13 +160,22 @@
                 type="text"
                 placeholder="Mical"
                 maxlength="30"
+                autocomplete="off"
             >
 
 
-            <button id="continueBtn" class="continue">
+            <!-- CONTINUAR -->
+
+            <button
+                id="continueBtn"
+                class="continue"
+                type="button"
+            >
                 Continuar
             </button>
 
+
+            <!-- RESULTADO -->
 
             <p id="result"></p>
 
@@ -118,11 +184,20 @@
     </div>
 
 
-    <!-- =========================
-         PANTALLA PRINCIPAL
-    ========================== -->
 
-    <main id="chatScreen" class="chat-screen hidden">
+    <!-- ==================================================
+         FAMILYCHAT
+    =================================================== -->
+
+    <main
+        id="chatScreen"
+        class="chat-screen hidden"
+    >
+
+
+        <!-- ==========================================
+             ENCABEZADO
+        =========================================== -->
 
         <header class="chat-header">
 
@@ -138,24 +213,45 @@
 
             </div>
 
-            <button id="logoutBtn">
+
+            <button
+                id="logoutBtn"
+                type="button"
+            >
                 🚪 Salir
+            </button>
+
+            <button
+                id="leaveFamilyBtn"
+                type="button"
+            >
+                🚪 Salir de la familia
             </button>
 
         </header>
 
 
+
+        <!-- ==========================================
+             CONTENIDO PRINCIPAL
+        =========================================== -->
+
         <section class="dashboard">
 
-            <!-- =====================
-                 MIEMBROS
-            ====================== -->
+
+            <!-- ======================================
+                 MIEMBROS DE LA FAMILIA
+            ======================================= -->
 
             <div class="section-title">
                 👨‍👩‍👧 Familia
             </div>
 
-            <div id="memberList" class="chat-list">
+
+            <div
+                id="memberList"
+                class="chat-list"
+            >
 
                 <div class="empty-message">
                     Cargando familiares...
@@ -164,15 +260,22 @@
             </div>
 
 
-            <!-- =====================
-                 CHATS
-            ====================== -->
 
-            <div class="section-title groups-title">
+            <!-- ======================================
+                 CHATS
+            ======================================= -->
+
+            <div
+                class="section-title groups-title"
+            >
                 💬 Chats
             </div>
 
-            <div id="chatList" class="chat-list">
+
+            <div
+                id="chatList"
+                class="chat-list"
+            >
 
                 <div class="empty-message">
                     Todavía no tenés conversaciones.
@@ -181,15 +284,22 @@
             </div>
 
 
-            <!-- =====================
-                 GRUPOS
-            ====================== -->
 
-            <div class="section-title groups-title">
+            <!-- ======================================
+                 GRUPOS
+            ======================================= -->
+
+            <div
+                class="section-title groups-title"
+            >
                 👥 Grupos
             </div>
 
-            <div id="groupList" class="chat-list">
+
+            <div
+                id="groupList"
+                class="chat-list"
+            >
 
                 <div class="empty-message">
                     Todavía no tenés grupos.
@@ -198,29 +308,47 @@
             </div>
 
 
-            <button id="createGroupBtn" class="create-group">
+            <!-- CREAR GRUPO -->
+
+            <button
+                id="createGroupBtn"
+                class="create-group"
+                type="button"
+            >
                 ＋ Crear grupo
             </button>
+
 
         </section>
 
     </main>
 
 
-    <!-- =========================
-         VENTANA DE CHAT
-    ========================== -->
+
+    <!-- ==================================================
+         VENTANA DE CONVERSACIÓN
+    =================================================== -->
 
     <div
         id="conversationScreen"
         class="conversation-screen hidden"
     >
 
+
+        <!-- ==========================================
+             ENCABEZADO DEL CHAT
+        =========================================== -->
+
         <header class="conversation-header">
 
-            <button id="backChatBtn">
+
+            <button
+                id="backChatBtn"
+                type="button"
+            >
                 ←
             </button>
+
 
             <div>
 
@@ -228,7 +356,7 @@
                     Chat
                 </h2>
 
-                <p>
+                <p id="conversationType">
                     Conversación privada
                 </p>
 
@@ -237,9 +365,15 @@
         </header>
 
 
-        <!-- MENSAJES -->
 
-        <div id="messages" class="messages">
+        <!-- ==========================================
+             MENSAJES
+        =========================================== -->
+
+        <div
+            id="messages"
+            class="messages"
+        >
 
             <div class="empty-message">
                 No hay mensajes todavía.
@@ -248,34 +382,46 @@
         </div>
 
 
-        <!-- ESCRIBIR MENSAJE -->
+
+        <!-- ==========================================
+             ESCRIBIR MENSAJE
+        =========================================== -->
 
         <div class="message-box">
+
 
             <input
                 id="messageInput"
                 type="text"
                 placeholder="Escribí un mensaje..."
                 maxlength="500"
+                autocomplete="off"
             >
 
-            <button id="sendMessageBtn">
+
+            <button
+                id="sendMessageBtn"
+                type="button"
+            >
                 ➤
             </button>
+
 
         </div>
 
     </div>
 
 
-    <!-- =========================
+
+    <!-- ==================================================
          JAVASCRIPT
-    ========================== -->
+    =================================================== -->
 
     <script
         type="module"
         src="app.js"
     ></script>
+
 
 </body>
 
