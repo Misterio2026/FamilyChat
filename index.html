@@ -1,428 +1,150 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FamilyChat</title>
-
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
-
+    <link rel="stylesheet" href="style.css">
 </head>
-
-
 <body>
 
-
-    <!-- ==================================================
-         PANTALLA DE INICIO
-    =================================================== -->
-
-    <main
-        id="homeScreen"
-        class="app"
-    >
-
+    <main id="homeScreen" class="app">
         <div class="logo">
-
-            <div class="logo-icon">
-                🏠
-            </div>
-
-            <h1>
-                FamilyChat
-            </h1>
-
-            <p>
-                Tu chat familiar privado
-            </p>
-
+            <div class="logo-icon">🏠</div>
+            <h1>FamilyChat</h1>
+            <p>Tu chat familiar privado</p>
         </div>
-
 
         <div class="menu">
-
-            <button
-                id="createBtn"
-                type="button"
-            >
-                👑 Crear familia
-            </button>
-
-
-            <button
-                id="joinBtn"
-                type="button"
-            >
-                🔑 Unirse a una familia
-            </button>
-
+            <button id="createBtn" type="button">👑 Crear familia</button>
+            <button id="joinBtn" type="button">🔑 Unirse a una familia</button>
         </div>
-
     </main>
 
-
-
-    <!-- ==================================================
-         MODAL CREAR / UNIRSE
-    =================================================== -->
-
-    <div
-        id="modal"
-        class="modal hidden"
-    >
-
+    <div id="modal" class="modal hidden">
         <div class="modal-box">
+            <button id="closeBtn" class="close" type="button">✕</button>
+            <h2 id="modalTitle">Crear familia</h2>
 
-
-            <!-- CERRAR -->
-
-            <button
-                id="closeBtn"
-                class="close"
-                type="button"
-            >
-                ✕
-            </button>
-
-
-            <h2 id="modalTitle">
-                Crear familia
-            </h2>
-
-
-            <!-- ==========================================
-                 NOMBRE DE FAMILIA
-            =========================================== -->
-
-            <div
-                id="familyNameContainer"
-            >
-
-                <label for="familyName">
-                    Nombre de la familia
-                </label>
-
-                <input
-                    id="familyName"
-                    type="text"
-                    placeholder="Flia. Escalante"
-                    maxlength="40"
-                    autocomplete="off"
-                >
-
+            <div id="familyNameContainer">
+                <label for="familyName">Nombre de la familia</label>
+                <input id="familyName" type="text" placeholder="Flia. Escalante" maxlength="40" autocomplete="off">
             </div>
 
-
-            <!-- ==========================================
-                 CÓDIGO DE FAMILIA
-            =========================================== -->
-
-            <div
-                id="codeContainer"
-                class="hidden"
-            >
-
-                <label for="familyCode">
-                    Código de familia
-                </label>
-
-                <input
-                    id="familyCode"
-                    type="text"
-                    placeholder="FAM-3BYC"
-                    maxlength="8"
-                    autocomplete="off"
-                >
-
+            <div id="codeContainer" class="hidden">
+                <label for="familyCode">Código de familia</label>
+                <input id="familyCode" type="text" placeholder="FAM-3BYC" maxlength="8" autocomplete="off">
             </div>
 
+            <label for="userName">Tu nombre</label>
+            <input id="userName" type="text" placeholder="Mical" maxlength="30" autocomplete="off">
 
-            <!-- ==========================================
-                 NOMBRE DEL USUARIO
-            =========================================== -->
-
-            <label for="userName">
-                Tu nombre
-            </label>
-
-            <input
-                id="userName"
-                type="text"
-                placeholder="Mical"
-                maxlength="30"
-                autocomplete="off"
-            >
-
-
-            <!-- CONTINUAR -->
-
-            <button
-                id="continueBtn"
-                class="continue"
-                type="button"
-            >
-                Continuar
-            </button>
-
-
-            <!-- RESULTADO -->
-
+            <button id="continueBtn" class="continue" type="button">Continuar</button>
             <p id="result"></p>
-
         </div>
-
     </div>
 
-
-
-    <!-- ==================================================
-         FAMILYCHAT
-    =================================================== -->
-
-    <main
-        id="chatScreen"
-        class="chat-screen hidden"
-    >
-
-
-        <!-- ==========================================
-             ENCABEZADO
-        =========================================== -->
-
+    <main id="chatScreen" class="chat-screen hidden">
         <header class="chat-header">
-
             <div>
-
-                <h2 id="familyTitle">
-                    🏠 Familia
-                </h2>
-
-                <p id="welcomeText">
-                    Bienvenido
-                </p>
-
+                <h2 id="familyTitle">🏠 Familia</h2>
+                <p id="welcomeText">Bienvenido</p>
             </div>
 
-
-            <button
-                id="logoutBtn"
-                type="button"
-            >
-                🚪 Salir
-            </button>
-
-            <button
-                id="leaveFamilyBtn"
-                type="button"
-            >
-                🚪 Salir de la familia
-            </button>
-
+            <div class="header-actions">
+                <button id="themeBtn" class="theme-button" type="button">🎨 Tema</button>
+                <button id="logoutBtn" type="button">🚪 Salir</button>
+            </div>
         </header>
-
-
-
-        <!-- ==========================================
-             CONTENIDO PRINCIPAL
-        =========================================== -->
 
         <section class="dashboard">
+            <div class="section-title">👨‍👩‍👧 Familia</div>
 
-
-            <!-- ======================================
-                 MIEMBROS DE LA FAMILIA
-            ======================================= -->
-
-            <div class="section-title">
-                👨‍👩‍👧 Familia
+            <div id="memberList" class="chat-list">
+                <div class="empty-message">Cargando familiares...</div>
             </div>
 
+            <div class="section-title groups-title">💬 Chats</div>
 
-            <div
-                id="memberList"
-                class="chat-list"
-            >
-
-                <div class="empty-message">
-                    Cargando familiares...
-                </div>
-
+            <div id="chatList" class="chat-list">
+                <div class="empty-message">Todavía no tenés conversaciones.</div>
             </div>
 
+            <div class="section-title groups-title">👥 Grupos</div>
 
-
-            <!-- ======================================
-                 CHATS
-            ======================================= -->
-
-            <div
-                class="section-title groups-title"
-            >
-                💬 Chats
+            <div id="groupList" class="chat-list">
+                <div class="empty-message">Todavía no tenés grupos.</div>
             </div>
 
+            <button id="createGroupBtn" class="create-group" type="button">＋ Crear grupo</button>
 
-            <div
-                id="chatList"
-                class="chat-list"
-            >
-
-                <div class="empty-message">
-                    Todavía no tenés conversaciones.
-                </div>
-
-            </div>
-
-
-
-            <!-- ======================================
-                 GRUPOS
-            ======================================= -->
-
-            <div
-                class="section-title groups-title"
-            >
-                👥 Grupos
-            </div>
-
-
-            <div
-                id="groupList"
-                class="chat-list"
-            >
-
-                <div class="empty-message">
-                    Todavía no tenés grupos.
-                </div>
-
-            </div>
-
-
-            <!-- CREAR GRUPO -->
-
-            <button
-                id="createGroupBtn"
-                class="create-group"
-                type="button"
-            >
-                ＋ Crear grupo
+            <button id="leaveFamilyBtn" class="leave-family" type="button">
+                🚪 Salir de la familia
             </button>
-
-
         </section>
-
     </main>
 
+    <div id="themePanel" class="theme-panel hidden">
+        <div class="theme-box">
+            <button id="closeThemeBtn" class="close" type="button">✕</button>
 
+            <h2>🎨 Personalizar</h2>
+            <p>Elegí el tema que querés usar en tu dispositivo.</p>
 
-    <!-- ==================================================
-         VENTANA DE CONVERSACIÓN
-    =================================================== -->
+            <div class="theme-grid">
+                <button class="theme-option" data-theme="space" type="button">
+                    <span class="theme-preview space"></span>
+                    🌌 Azul espacial
+                </button>
 
-    <div
-        id="conversationScreen"
-        class="conversation-screen hidden"
-    >
+                <button class="theme-option" data-theme="purple" type="button">
+                    <span class="theme-preview purple"></span>
+                    💜 Violeta
+                </button>
 
+                <button class="theme-option" data-theme="cyan" type="button">
+                    <span class="theme-preview cyan"></span>
+                    🌊 Cian
+                </button>
 
-        <!-- ==========================================
-             ENCABEZADO DEL CHAT
-        =========================================== -->
+                <button class="theme-option" data-theme="green" type="button">
+                    <span class="theme-preview green"></span>
+                    🌿 Verde
+                </button>
 
-        <header class="conversation-header">
+                <button class="theme-option" data-theme="pink" type="button">
+                    <span class="theme-preview pink"></span>
+                    🌸 Rosa
+                </button>
 
-
-            <button
-                id="backChatBtn"
-                type="button"
-            >
-                ←
-            </button>
-
-
-            <div>
-
-                <h2 id="conversationName">
-                    Chat
-                </h2>
-
-                <p id="conversationType">
-                    Conversación privada
-                </p>
-
+                <button class="theme-option" data-theme="light" type="button">
+                    <span class="theme-preview light"></span>
+                    ☀️ Claro
+                </button>
             </div>
-
-        </header>
-
-
-
-        <!-- ==========================================
-             MENSAJES
-        =========================================== -->
-
-        <div
-            id="messages"
-            class="messages"
-        >
-
-            <div class="empty-message">
-                No hay mensajes todavía.
-            </div>
-
         </div>
-
-
-
-        <!-- ==========================================
-             ESCRIBIR MENSAJE
-        =========================================== -->
-
-        <div class="message-box">
-
-
-            <input
-                id="messageInput"
-                type="text"
-                placeholder="Escribí un mensaje..."
-                maxlength="500"
-                autocomplete="off"
-            >
-
-
-            <button
-                id="sendMessageBtn"
-                type="button"
-            >
-                ➤
-            </button>
-
-
-        </div>
-
     </div>
 
+    <div id="conversationScreen" class="conversation-screen hidden">
+        <header class="conversation-header">
+            <button id="backChatBtn" type="button">←</button>
 
+            <div>
+                <h2 id="conversationName">Chat</h2>
+                <p id="conversationType">Conversación privada</p>
+            </div>
+        </header>
 
-    <!-- ==================================================
-         JAVASCRIPT
-    =================================================== -->
+        <div id="messages" class="messages">
+            <div class="empty-message">No hay mensajes todavía.</div>
+        </div>
 
-    <script
-        type="module"
-        src="app.js"
-    ></script>
+        <div class="message-box">
+            <input id="messageInput" type="text" placeholder="Escribí un mensaje..." maxlength="500" autocomplete="off">
+            <button id="sendMessageBtn" type="button">➤</button>
+        </div>
+    </div>
 
-
+    <script type="module" src="app.js"></script>
 </body>
-
 </html>
